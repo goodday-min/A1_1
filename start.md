@@ -39,6 +39,12 @@
           git config --global init.defaultBranch main  
 
 ### 2단계: Git/GitHub 설정 (저장소 설정)  
+      - GitHub 저장소 생성  
+      - 로컬 폴더 Git 초기화 & GitHub 연결
+         로컬 폴더 만들기  
+         Git 초기화  
+         GitHub 연결  
+      - 첫 커밋 & 푸시  
 
           # 프로젝트 폴더 생성  
           mkdir prompt-manager  
