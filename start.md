@@ -10,15 +10,15 @@
   - 번호 입력으로 추가/검색/즐겨찾기
   - 깔끔하게 관리 😊
 
-✅ VSCode 설치
-✅ Python 설치
-✅ Git 설치 & 설정
-✅ GitHub 저장소 생성
-✅ git init (로컬 저장소 생성)
-✅ git add (파일 추가)
-✅ git commit (로컬 저장)
-✅ git pull (GitHub → 내 컴퓨터)
-✅ git push (내 컴퓨터 → GitHub)
+✅ VSCode 설치  
+✅ Python 설치  
+✅ Git 설치 & 설정  
+✅ GitHub 저장소 생성  
+✅ git init (로컬 저장소 생성)  
+✅ git add (파일 추가)  
+✅ git commit (로컬 저장)  
+✅ git pull (GitHub → 내 컴퓨터)  
+✅ git push (내 컴퓨터 → GitHub)  
 
 
 ---  
@@ -75,7 +75,8 @@
         git log       # 커밋 기록 보기
 
 
-
+💡 핵심 루틴 기억하기!
+수정 → add → commit → push 이 4단계가 앞으로 매일 하는 작업이에요!
 
 --------------------------------------------------
 
