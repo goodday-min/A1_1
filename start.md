@@ -39,8 +39,29 @@
           git config --global init.defaultBranch main  
 
 ### 2단계: Git/GitHub 설정 (저장소 설정)  
-      - GitHub 저장소 생성  
-      - 로컬 폴더 Git 초기화 & GitHub 연결
+-----
+  #### 프로젝트 폴더 생성
+  mkdir prompt-manager
+  cd prompt-manager
+
+  #### 프로젝트 파일 생성
+
+  
+  #### Git 초기화
+  git init
+  
+  #### .gitignore 생성
+  echo "__pycache__/" > .gitignore
+  echo "*.pyc" >> .gitignore
+  echo ".DS_Store" >> .gitignore
+
+------------
+
+
+
+
+- GitHub 저장소 생성  
+- 로컬 폴더 Git 초기화 & GitHub 연결  
          로컬 폴더 만들기  
          Git 초기화  
          GitHub 연결  
@@ -102,7 +123,7 @@
             📁 A1_1
               └── 📄 A1_1.py   ← 이걸 만들어요!
 
-            echo "" > A1_1.py
+            >echo "" > A1_1.py
               │    │    │
               │    │    └── 만들 파일 이름
               │    └── 빈 내용 (파일 안에 들어갈 내용)
@@ -115,12 +136,37 @@
             >A1_1.py             <- 이렇게 나오면 성공
             
             Git에 등록
-            git add A1_1.py
+            >git add A1_1.py
               │   │    │
               │   │    └── 등록할 파일 이름
               │   └── "이 파일을 추적 목록에 올려줘"
               └── "준비해줘"
   
+            >git commit -m "first commit"
+                │       │       │
+                │       │       └── 메모 내용 (내가 쓰고 싶은 말)
+                │       └── -m : message의 약자 (메모를 쓰겠다는 신호)
+                └── "지금 이 상태를 저장해줘"
+
+
+               -> [main (root-commit) 7a28fe1] first commit
+                   │         │          │         │
+                   │         │          │         └── 내가 쓴 메모
+                   │         │          └── 커밋 고유번호 (일종의 저장 ID)
+                   │         └── 첫 번째 커밋이라는 표시
+                   └── main 브랜치에 저장됨
+                
+               -> 1 file changed, 0 insertions(+), 0 deletions(-)
+                   │                  │                  │
+                   │                  │                  └── 삭제된 줄 : 0줄
+                   │                  └── 추가된 줄 : 0줄 (빈 파일이라서)
+                   └── 변경된 파일 : 1개
+                
+               -> create mode 100644 A1_1.py
+                                      │
+                                      └── A1_1.py 파일이 새로 등록됨
+
+
 
 
 
