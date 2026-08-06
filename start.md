@@ -44,14 +44,90 @@
          로컬 폴더 만들기  
          Git 초기화  
          GitHub 연결  
+         
       - 첫 커밋 & 푸시  
-
           # 프로젝트 폴더 생성  
-          mkdir prompt-manager  
-          cd prompt-manager  
+          mkdir A1_1  
+          cd A1_1  
           
           # Git 초기화  
           git init  
+
+  ### 3단계. GitHub 저장소 연결  
+        
+  git remote add origin https://github.com/본인아이디/A1_1.git
+  *origin	GitHub 주소의 별명 (관례적 이름)*
+  
+        git remote add origin https://github.com/goodday-min/A1_1.git
+                 │      │        │
+                 │      │        └── 실제 GitHub 주소
+                 │      └── 별명 (내가 마음대로 정할 수 있어요!)
+                 └── "원격 저장소를 추가해줘"  
+                 
+        1단계 - GitHub 연결 : git remote add origin https://github.com/goodday-min/A1_1.git
+        2단계 - 연결 확인 :   git remote -v
+                              -> origin  https://github.com/goodday-min/A1_1.git (fetch)
+                              -> origin  https://github.com/goodday-min/A1_1.git (push)
+
+        
+        파일 추가
+          git add .
+                📁 내 폴더 안의 모든 파일들을
+                        ↓
+                📦 "커밋 준비 상태"로 올려놓은 것
+
+          
+        첫 커밋
+          >git commit -m "first commit: 프롬프트 관리 프로그램 초기 버전"
+          
+          >git commit -m "first commit"
+              │       │       │
+              │       │       └── 메모 내용 (내가 쓰고 싶은 말)
+              │       └── message의 약자 (메모를 쓰겠다는 신호)
+              └── "지금 상태를 저장해줘"
+        
+            # -m 있을 때 (한 줄로 바로 작성) : git commit -m "first commit"
+            # -m 없을 때 (편집기가 열려버림 😱) : git commit
+            그냥 항상 -m 쓰세요 😄
+
+            >git commit -m "first commit
+            -> On branch main (지금 main 브랜치에 있어요)
+            -> Initial commit (이미 커밋이 되어있어요)
+            -> nothing to commit (create/copy files and use "git add" to track) (커밋할 게 없어요 (이미 다 저장됨))
+
+            >ls (지금 파일 상태 확인)  
+            -> (아무것도 안 나옴) <----폴더가 비어 있음 (파일이 없음)
+
+            파일 먼저 만들기 
+            📁 A1_1
+              └── 📄 A1_1.py   ← 이걸 만들어요!
+
+            echo "" > A1_1.py
+              │    │    │
+              │    │    └── 만들 파일 이름
+              │    └── 빈 내용 (파일 안에 들어갈 내용)
+              └── "이 내용을 출력/전달해줘"
+            > 는 "오른쪽 파일에 저장해" 
+            
+
+            >echo "" > A1_1.py
+            >ls
+            >A1_1.py             <- 이렇게 나오면 성공
+            
+            Git에 등록
+            git add A1_1.py
+              │   │    │
+              │   │    └── 등록할 파일 이름
+              │   └── "이 파일을 추적 목록에 올려줘"
+              └── "준비해줘"
+  
+
+
+
+
+GitHub에 푸시
+  git push -u origin main
+
           
           # .gitignore 생성  
           echo "__pycache__/" > .gitignore  
