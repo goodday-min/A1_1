@@ -6,10 +6,75 @@ import json
 
 # 데이터 저장 리스트
 prompts = []
+
+# JSON 파일 경로
+FILE_PATH = "prompts.json"
+next_id = 1
+
+
+
+
 # 미리 정의된 카테고리 목록
 CATEGORIES = ["텍스트 생성", "이미지 생성", "영상 생성", "페르소나", "자동화", "기타"]
 
+def save_prompts():
+    """프롬프트 데이터를 JSON 파일에 저장"""
+    with open(FILE_PATH, "w", encoding="utf-8") as f:
+        json.dump(prompts, f, ensure_ascii=False, indent=2)
 
+
+def load_prompts():
+    """JSON 파일에서 프롬프트 데이터 불러오기"""
+    global prompts, next_id
+
+    # 파일이 없으면 초기 데이터 3개 등록
+    try:
+        with open(FILE_PATH, "r", encoding="utf-8") as f:
+            prompts = json.load(f)
+            
+        # ✅ favorite 키 없는 데이터 보완
+        for prompt in prompts:
+            if "favorite" not in prompt:
+                #prompt["favorite"] = False            
+                prompt.get("favorite",False)
+        # ✅ 로드 후 next_id 재계산
+        if prompts:
+            next_id = max(p["id"] for p in prompts) + 1
+        else:
+            next_id = 1            
+            
+        print(f"✅ {len(prompts)}개의 프롬프트를 불러왔습니다.")
+
+    except FileNotFoundError:
+        # 처음 실행 시 - 초기 데이터 3개 등록
+        prompts = [
+            {
+                "id"      : 1,
+                "title"   : "블로그 글 작성",
+                "content" : "당신은 전문 블로거입니다. 주어진 주제로 SEO에 최적화된 블로그 글을 작성해주세요.",
+                "category": "텍스트 생성",
+                "favorite": False
+            },
+            {
+                "id"      : 2,
+                "title"   : "풍경 이미지 생성",
+                "content" : "A breathtaking landscape at golden hour, photorealistic, 8K resolution.",
+                "category": "이미지 생성",
+                "favorite": True
+            },
+            {
+                "id"      : 3,
+                "title"   : "친절한 상담사",
+                "content" : "당신은 공감 능력이 뛰어난 상담사입니다. 사용자의 고민을 경청하고 따뜻하게 조언해주세요.",
+                "category": "페르소나",
+                "favorite": False
+            }
+        ]
+        
+        next_id = 4
+        save_prompts()  # 초기 데이터 바로 저장
+        print("✅ 초기 프롬프트 3개가 등록되었습니다.")
+        
 
 def show_menu():
     """메뉴 화면 출력"""
@@ -30,7 +95,9 @@ def show_menu():
 
 
 def add_prompt():
-    """1번 메뉴 - 프롬프트 추가"""
+    global next_id  # ← 추가
+     
+    #"""1번 메뉴 - 프롬프트 추가"""
     print("\n--- 📝 프롬프트 추가 ---")
 
     # 제목 입력 (빈값 재입력 요청)
@@ -76,7 +143,7 @@ def add_prompt():
 
     # 프롬프트 데이터 생성
     prompt = {
-        "id"        : len(prompts) + 1,  # 고유 번호
+        "id"       : next_id,            # 고유 번호
         "title"     : title,             # 제목
         "content"   : content,           # 내용
         "category"  : category,          # 카테고리
@@ -85,6 +152,8 @@ def add_prompt():
 
     # 리스트에 저장
     prompts.append(prompt)
+    next_id += 1    
+    save_prompts()
 
     print(f"\n✅ 프롬프트가 추가되었습니다!")
     print(f"   제목     : {title}")
@@ -105,7 +174,7 @@ def edit_prompt():
         # 전체 목록 출력
         print()
         for i, p in enumerate(prompts, 1):
-            star = "⭐" if p["favorite"] else "☆"
+            star = "⭐" if p.get("favorite", False) else "☆"
             print(f"{i}. [{star}] [{p['category']}] {p['title']}")
         print()
 
@@ -162,7 +231,10 @@ def edit_prompt():
             p["content"] = new_content
 
         print()
+        save_prompts()   
         print(f"✅ '{p['title']}' 프롬프트가 수정되었습니다.")
+
+
 
 def delete_prompt():
     """3번 메뉴 - 프롬프트 삭제"""
@@ -178,7 +250,7 @@ def delete_prompt():
         # 전체 목록 출력
         print()
         for i, p in enumerate(prompts, 1):
-            star = "⭐" if p["favorite"] else "☆"
+            star = "⭐" if p.get("favorite", False) else "☆"
             print(f"{i}. [{star}] [{p['category']}] {p['title']}")
         print()
 
@@ -215,6 +287,7 @@ def delete_prompt():
         if confirm == "y":
             deleted_title = p["title"]
             prompts.pop(index)          # ✅ 리스트에서 제거
+            save_prompts() 
             print(f"🗑️  '{deleted_title}' 프롬프트가 삭제되었습니다.")
         else:
             print("❌ 삭제가 취소되었습니다.")
@@ -231,7 +304,8 @@ def show_all_prompts():
     
     # 목록 출력
     for i, prompt in enumerate(prompts, 1):
-        favorite = "⭐" if prompt["favorite"] else "  "
+        #favorite = "⭐" if prompt["favorite"] else "  "
+        favorite = "⭐" if prompt.get("favorite", False) else "  "
         print(f"{i}. [{favorite}] {prompt['title']} | {prompt['category']}")
     
     input("\n계속하려면 Enter를 누르세요...")
@@ -278,7 +352,7 @@ def search_prompt():
         # 검색 결과 출력
         print("검색 결과:")
         for i, p in enumerate(filtered, 1):
-            star = "⭐" if p["favorite"] else ""
+            star = "⭐" if p.get("favorite", False) else ""
             print(f"{i}. [{p['category']}] {p['title']} {star}")
 
         print()
@@ -299,7 +373,7 @@ def view_prompt_detail():
 
         print()
         for i, p in enumerate(prompts, 1):
-            star = "⭐" if p["favorite"] else ""
+            star = "⭐" if p.get("favorite", False) else ""
             print(f"{i}. [{p['category']}] {p['title']} {star}")
         print()
 
@@ -325,7 +399,7 @@ def view_prompt_detail():
 
         # 선택한 프롬프트 출력
         p = prompts[index]
-        star = "⭐" if p["favorite"] else "없음"
+        star = "⭐" if p.get("favorite", False) else "없음"
 
         print()
         print("─" * 40)
@@ -397,7 +471,7 @@ def view_by_category():
 
         # 프롬프트 목록 출력
         for i, p in enumerate(filtered, 1):
-            star = "⭐" if p["favorite"] else ""
+            star = "⭐" if p.get("favorite", False) else ""
             print(f"{i}. {p['title']} {star}")
 
         print("--------------------")
@@ -418,7 +492,7 @@ def manage_favorite():
         # 전체 목록 출력 (즐겨찾기 여부 포함)
         print()
         for i, p in enumerate(prompts, 1):
-            star = "⭐" if p["favorite"] else "☆"
+            star = "⭐" if p.get("favorite", False) else "☆"
             print(f"{i}. [{star}] [{p['category']}] {p['title']}")
         print()
 
@@ -444,9 +518,10 @@ def manage_favorite():
 
         # ✅ 즐겨찾기 토글
         p = prompts[index]
-        p["favorite"] = not p["favorite"]
-
-        if p["favorite"]:
+        p["favorite"] = not p.get("favorite", False)
+        save_prompts()
+        
+        if p.get("favorite", False):
             print(f"⭐ '{p['title']}' 즐겨찾기에 추가되었습니다.")
         else:
             print(f"☆  '{p['title']}' 즐겨찾기가 해제되었습니다.")
@@ -522,6 +597,8 @@ def view_favorites():
 
 def main():
     """메인 실행 함수"""
+    load_prompts()
+    
     while True:
         show_menu()
         choice = input("선택하세요: ").strip()
