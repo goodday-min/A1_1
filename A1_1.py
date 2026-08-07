@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
+import os
+import copy
 
 
 # 프롬프트 관리 프로그램
@@ -11,70 +13,98 @@ prompts = []
 FILE_PATH = "prompts.json"
 next_id = 1
 
-
-
-
 # 미리 정의된 카테고리 목록
 CATEGORIES = ["텍스트 생성", "이미지 생성", "영상 생성", "페르소나", "자동화", "기타"]
 
-def save_prompts():
-    """프롬프트 데이터를 JSON 파일에 저장"""
+# 기본 프롬프트 3개
+DEFAULT_PROMPTS = [
+    {
+        "id": 1,
+        "title": "블로그 글쓰기",
+        "content": "당신은 전문 블로거입니다. 주어진 주제로 SEO에 최적화된 블로그 글을 작성해주세요.",
+        "category": "글쓰기",
+        "favorite": False
+    },
+    {
+        "id": 2,
+        "title": "코드 리뷰",
+        "content": "당신은 시니어 개발자입니다. 아래 코드를 리뷰하고 개선점을 알려주세요.",
+        "category": "개발",
+        "favorite": False
+    },
+    {
+        "id": 3,
+        "title": "번역 도우미",
+        "content": "당신은 전문 번역가입니다. 아래 텍스트를 자연스러운 한국어로 번역해주세요.",
+        "category": "번역",
+        "favorite": False
+    }
+]
+
+def save_prompts(prompts):
+    """id가 3 이하인 기본 데이터만 JSON에 저장"""
+    default_only = [p for p in prompts if p["id"] <= 3]
+    data = {"prompts": default_only}
     with open(FILE_PATH, "w", encoding="utf-8") as f:
-        json.dump(prompts, f, ensure_ascii=False, indent=2)
+        json.dump(data, f, ensure_ascii=False, indent=4)
+
+
 
 
 def load_prompts():
-    """JSON 파일에서 프롬프트 데이터 불러오기"""
     global prompts, next_id
 
-    # 파일이 없으면 초기 데이터 3개 등록
-    try:
-        with open(FILE_PATH, "r", encoding="utf-8") as f:
-            prompts = json.load(f)
-            
-        # ✅ favorite 키 없는 데이터 보완
-        for prompt in prompts:
-            if "favorite" not in prompt:
-                #prompt["favorite"] = False            
-                prompt.get("favorite",False)
-        # ✅ 로드 후 next_id 재계산
-        if prompts:
-            next_id = max(p["id"] for p in prompts) + 1
-        else:
-            next_id = 1            
-            
-        print(f"✅ {len(prompts)}개의 프롬프트를 불러왔습니다.")
+    # JSON 없거나 비어있으면 → 빈 리스트로 시작
+    if not os.path.exists(FILE_PATH) or os.path.getsize(FILE_PATH) == 0:
+        prompts = []      # ✅ 기본 데이터 없음!
+        next_id = 1       # ✅ 1번부터 시작
+        return
 
-    except FileNotFoundError:
-        # 처음 실행 시 - 초기 데이터 3개 등록
-        prompts = [
-            {
-                "id"      : 1,
-                "title"   : "블로그 글 작성",
-                "content" : "당신은 전문 블로거입니다. 주어진 주제로 SEO에 최적화된 블로그 글을 작성해주세요.",
-                "category": "텍스트 생성",
-                "favorite": False
-            },
-            {
-                "id"      : 2,
-                "title"   : "풍경 이미지 생성",
-                "content" : "A breathtaking landscape at golden hour, photorealistic, 8K resolution.",
-                "category": "이미지 생성",
-                "favorite": True
-            },
-            {
-                "id"      : 3,
-                "title"   : "친절한 상담사",
-                "content" : "당신은 공감 능력이 뛰어난 상담사입니다. 사용자의 고민을 경청하고 따뜻하게 조언해주세요.",
-                "category": "페르소나",
-                "favorite": False
-            }
-        ]
+    # JSON 파일이 있으면 불러오기
+    with open(FILE_PATH, "r", encoding="utf-8") as f:
+        data = json.load(f)
+        prompts = data.get("prompts", [])   # ✅ 없으면 빈 리스트
+        if prompts:
+            next_id = max(p["id"] for p in prompts) + 1  # ✅ 실제 마지막 id + 1
+        else:
+            next_id = 1
+
+
+def load_prompts1():
+    global prompts, next_id
         
+    print("최초 실행! load_prompts...")
+    print(f"파일 존재: {os.path.exists(FILE_PATH)}")          # ← 추가
+    print(f"파일 크기: {os.path.getsize(FILE_PATH) if os.path.exists(FILE_PATH) else 'N/A'}")  # ← 추가
+       
+            
+    # JSON 없거나 비어있으면 → 최초 1회만 기본 3개 저장
+    if not os.path.exists(FILE_PATH) or os.path.getsize(FILE_PATH) == 0:
+        prompts = copy.deepcopy(DEFAULT_PROMPTS)
+        
+        print("최초 실행! JSON 저장 중...")  # ← 이게 출력되나요?
+        save_prompts(prompts)  # 기본 3개만 JSON 저장
         next_id = 4
-        save_prompts()  # 초기 데이터 바로 저장
-        print("✅ 초기 프롬프트 3개가 등록되었습니다.")
+        return
+
+    # JSON 파일이 있으면 불러오기
+    print("JSON 파일 불러오는 중...")   # ← 추가
+    with open(FILE_PATH, "r", encoding="utf-8") as f:
+        data = json.load(f)
+        prompts = data.get("prompts", copy.deepcopy(DEFAULT_PROMPTS))
+        #next_id = max(p["id"] for p in prompts) + 1
+        next_id = 4  # ← 항상 4로 고정! (추가 데이터는 메모리에만)
+        print(f"불러온 prompts: {prompts}")  # ← 추가
         
+
+def save_default_prompts():
+    """기본 데이터 3개를 JSON에 저장"""
+    import copy
+    data = {"prompts": copy.deepcopy(DEFAULT_PROMPTS)}
+    with open(FILE_PATH, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+
+
 
 def show_menu():
     """메뉴 화면 출력"""
@@ -95,7 +125,7 @@ def show_menu():
 
 
 def add_prompt():
-    global next_id  # ← 추가
+    global next_id, prompts
      
     #"""1번 메뉴 - 프롬프트 추가"""
     print("\n--- 📝 프롬프트 추가 ---")
@@ -153,7 +183,7 @@ def add_prompt():
     # 리스트에 저장
     prompts.append(prompt)
     next_id += 1    
-    save_prompts()
+    #save_prompts(prompts)
 
     print(f"\n✅ 프롬프트가 추가되었습니다!")
     print(f"   제목     : {title}")
@@ -231,7 +261,7 @@ def edit_prompt():
             p["content"] = new_content
 
         print()
-        save_prompts()   
+        #save_prompts(prompts)   
         print(f"✅ '{p['title']}' 프롬프트가 수정되었습니다.")
 
 
@@ -287,7 +317,7 @@ def delete_prompt():
         if confirm == "y":
             deleted_title = p["title"]
             prompts.pop(index)          # ✅ 리스트에서 제거
-            save_prompts() 
+            #save_prompts(prompts) 
             print(f"🗑️  '{deleted_title}' 프롬프트가 삭제되었습니다.")
         else:
             print("❌ 삭제가 취소되었습니다.")
@@ -519,7 +549,7 @@ def manage_favorite():
         # ✅ 즐겨찾기 토글
         p = prompts[index]
         p["favorite"] = not p.get("favorite", False)
-        save_prompts()
+        #save_prompts(prompts)
         
         if p.get("favorite", False):
             print(f"⭐ '{p['title']}' 즐겨찾기에 추가되었습니다.")
@@ -596,6 +626,8 @@ def view_favorites():
 
 
 def main():
+    
+    global prompts
     """메인 실행 함수"""
     load_prompts()
     
@@ -622,6 +654,7 @@ def main():
         elif choice == "9":
             view_favorites()        # 즐겨찾기 목록
         elif choice == "0":
+            save_prompts(prompts)  # 기본 데이터만 저장
             print("👋 프로그램을 종료합니다. 안녕히 가세요!") #종료
             break
         else:
