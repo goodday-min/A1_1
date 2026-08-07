@@ -91,47 +91,139 @@ def add_prompt():
     print(f"   카테고리 : {category}")
 
 
+def edit_prompt():
+    """2번 메뉴 - 프롬프트 수정"""
 
+    while True:  # ✅ 계속 수정 가능하도록 루프 유지
+        print("\n=== ✏️  프롬프트 수정 ===")
 
+        # 프롬프트 없을 때
+        if not prompts:
+            print("⚠️  저장된 프롬프트가 없습니다.")
+            return
 
-def view_by_category():
-    """7번 메뉴 - 카테고리별 조회"""
-    print("\n--- 📂 카테고리별 조회 ---")
+        # 전체 목록 출력
+        print()
+        for i, p in enumerate(prompts, 1):
+            star = "⭐" if p["favorite"] else "☆"
+            print(f"{i}. [{star}] [{p['category']}] {p['title']}")
+        print()
 
-    # ✅ CATEGORIES 전역변수 기준으로 목록 출력
-    print("\n--- 카테고리 목록 ---")
-    for i, category in enumerate(CATEGORIES, 1):
-        print(f"{i}. {category}")
-    print("--------------------")
+        # 번호 입력
+        choice = input("수정할 번호 입력 (0: 메인화면): ").strip()
 
-    # 카테고리 선택
-    while True:
-        cat_choice = input("조회할 카테고리 번호를 선택하세요: ").strip()
+        if choice == "0":
+            print("📋 메인화면으로 돌아갑니다.")
+            return
 
-        if cat_choice.isdigit() and 1 <= int(cat_choice) <= len(CATEGORIES):
-            selected = CATEGORIES[int(cat_choice) - 1]
-            break
+        if not choice.isdigit():
+            print("⚠️  숫자를 입력하세요.")
+            continue
+
+        index = int(choice) - 1
+
+        if not (0 <= index < len(prompts)):
+            print(f"⚠️  1 ~ {len(prompts)} 사이의 번호를 입력하세요.")
+            continue
+
+        # ✅ 수정할 프롬프트 선택
+        p = prompts[index]
+
+        print()
+        print("─" * 40)
+        print(f"제목     : {p['title']}")
+        print(f"카테고리 : {p['category']}")
+        print(f"내용     : {p['content']}")
+        print("─" * 40)
+        print("※ 변경하지 않을 항목은 Enter를 누르세요.")
+        print()
+
+        # 제목 수정
+        new_title = input(f"새 제목 ({p['title']}): ").strip()
+        if new_title:
+            p["title"] = new_title
+
+        # 카테고리 수정
+        print()
+        for i, cat in enumerate(CATEGORIES, 1):
+            print(f"{i}. {cat}")
+        print()
+        new_cat = input(f"새 카테고리 번호 ({p['category']}): ").strip()
+        if new_cat.isdigit():
+            cat_index = int(new_cat) - 1
+            if 0 <= cat_index < len(CATEGORIES):
+                p["category"] = CATEGORIES[cat_index]
+            else:
+                print("⚠️  올바른 번호가 아니어서 카테고리는 변경되지 않았습니다.")
+
+        # 내용 수정
+        new_content = input(f"새 내용 ({p['content']}): ").strip()
+        if new_content:
+            p["content"] = new_content
+
+        print()
+        print(f"✅ '{p['title']}' 프롬프트가 수정되었습니다.")
+
+def delete_prompt():
+    """3번 메뉴 - 프롬프트 삭제"""
+
+    while True:  # ✅ 계속 삭제 가능하도록 루프 유지
+        print("\n=== 🗑️  프롬프트 삭제 ===")
+
+        # 프롬프트 없을 때
+        if not prompts:
+            print("⚠️  저장된 프롬프트가 없습니다.")
+            return
+
+        # 전체 목록 출력
+        print()
+        for i, p in enumerate(prompts, 1):
+            star = "⭐" if p["favorite"] else "☆"
+            print(f"{i}. [{star}] [{p['category']}] {p['title']}")
+        print()
+
+        # 번호 입력
+        choice = input("삭제할 번호 입력 (0: 메인화면): ").strip()
+
+        if choice == "0":
+            print("📋 메인화면으로 돌아갑니다.")
+            return
+
+        if not choice.isdigit():
+            print("⚠️  숫자를 입력하세요.")
+            continue
+
+        index = int(choice) - 1
+
+        if not (0 <= index < len(prompts)):
+            print(f"⚠️  1 ~ {len(prompts)} 사이의 번호를 입력하세요.")
+            continue
+
+        # ✅ 삭제 전 확인
+        p = prompts[index]
+
+        print()
+        print("─" * 40)
+        print(f"제목     : {p['title']}")
+        print(f"카테고리 : {p['category']}")
+        print(f"내용     : {p['content']}")
+        print("─" * 40)
+        print()
+
+        confirm = input(f"⚠️  '{p['title']}' 을(를) 삭제하시겠습니까? (y/n): ").strip().lower()
+
+        if confirm == "y":
+            deleted_title = p["title"]
+            prompts.pop(index)          # ✅ 리스트에서 제거
+            print(f"🗑️  '{deleted_title}' 프롬프트가 삭제되었습니다.")
         else:
-            print(f"⚠️  1 ~ {len(CATEGORIES)} 사이의 번호를 입력하세요.")
+            print("❌ 삭제가 취소되었습니다.")
+            
 
-    # 선택한 카테고리의 프롬프트 필터링
-    filtered = [p for p in prompts if p["category"] == selected]
 
-    print(f"\n[ {selected} ] 카테고리 :")
-    print("--------------------")
 
-    # ✅ 카테고리는 있지만 프롬프트가 없는 경우
-    if not filtered:
-        print(f"⚠️  [{selected}] 카테고리에 저장된 프롬프트가 없습니다.")
-        return
 
-    # 프롬프트 목록 출력
-    for i, p in enumerate(filtered, 1):
-        star = "⭐" if p["favorite"] else ""
-        print(f"{i}. {p['title']} {star}")
 
-    print("--------------------")
-    print(f"총 {len(filtered)}개의 프롬프트가 있습니다.")
 
 
 def search_prompt():
@@ -423,9 +515,9 @@ def main():
         if choice == "1":
             add_prompt()            # 프롬프트 추가
         elif choice == "2":
-            print("준비 중입니다.")   # 프롬프트 수정
+            edit_prompt()           # 프롬프트 수정
         elif choice == "3":
-            print("준비 중입니다.")   # 프롬프트 삭제
+            delete_prompt()   # 프롬프트 삭제
         elif choice == "4":
             print("준비 중입니다.")   # 프롬프트 목록
         elif choice == "5":
