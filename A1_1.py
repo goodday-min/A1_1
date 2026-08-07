@@ -220,7 +220,21 @@ def delete_prompt():
             print("❌ 삭제가 취소되었습니다.")
             
 
-
+def show_all_prompts():
+    print("\n===== 프롬프트 목록 =====")
+    
+    # 프롬프트가 없을 때
+    if not prompts:
+        print("저장된 프롬프트가 없습니다.")
+        input("\n계속하려면 Enter를 누르세요...")
+        return
+    
+    # 목록 출력
+    for i, prompt in enumerate(prompts, 1):
+        favorite = "⭐" if prompt["favorite"] else "  "
+        print(f"{i}. [{favorite}] {prompt['title']} | {prompt['category']}")
+    
+    input("\n계속하려면 Enter를 누르세요...")
 
 
 
@@ -519,7 +533,7 @@ def main():
         elif choice == "3":
             delete_prompt()   # 프롬프트 삭제
         elif choice == "4":
-            print("준비 중입니다.")   # 프롬프트 목록
+            show_all_prompts()   # 프롬프트 목록
         elif choice == "5":
             search_prompt()         # 프롬프트 검색
         elif choice == "6":
