@@ -226,7 +226,7 @@ def show_all_prompts():
     # 프롬프트가 없을 때
     if not prompts:
         print("저장된 프롬프트가 없습니다.")
-        input("\n계속하려면 Enter를 누르세요...")
+        #input("\n계속하려면 Enter를 누르세요...")
         return
     
     # 목록 출력
