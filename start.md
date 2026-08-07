@@ -10,7 +10,75 @@
   - 번호 입력으로 추가/검색/즐겨찾기
   - 깔끔하게 관리 😊
 
+✅ VSCode 설치  
+✅ Python 설치  
+✅ Git 설치 & 설정  
+✅ GitHub 저장소 생성  
+✅ git init (로컬 저장소 생성)  
+✅ git add (파일 추가)  
+✅ git commit (로컬 저장)  
+✅ git pull (GitHub → 내 컴퓨터)  
+✅ git push (내 컴퓨터 → GitHub)  
 
+
+---  
+📦 1. 설치 (GUI 작업)
+
+      VSCode    → https://code.visualstudio.com/
+      Python    → https://www.python.org/
+      Git       → https://git-scm.com/  
+*설치 시 Python은 "Add to PATH" 체크 필수!*
+
+⚙️ 2. Git 최초 설정 (딱 한 번만) : 내가 누구인지 Git에게 알려주는 작업
+
+      git config --global user.name "내이름"
+      git config --global user.email "내이메일@gmail.com"
+
+🏠 3. 로컬 저장소 생성
+
+      cd 내프로젝트폴더    # 폴더로 이동
+      git init             # Git 저장소 시작 (.git 폴더 생성)
+
+🔗 4. GitHub 저장소 연결 : 로컬 ↔ GitHub 연결 다리 만들기
+
+      git remote add origin https://github.com/내아이디/저장소이름.git
+
+📸 5. 파일 저장 (add → commit)
+
+      git add .                        # 변경된 모든 파일 스테이징
+      git commit -m "첫 번째 커밋"     # 로컬에 저장 (스냅샷 찍기)
+      
+      작업흐름:
+      내 파일 수정 → git add → git commit → (로컬 저장 완료!)
+
+🔄 6. GitHub와 동기화
+
+      # GitHub → 내 컴퓨터 (받아오기)
+      git pull origin main
+      
+      # 내 컴퓨터 → GitHub (올리기)
+      git push origin main
+
+🗺️ 전체 흐름 한눈에 보기
+
+      [내 컴퓨터]                    [GitHub]
+         │                              │
+         │  git add .                   │
+         │  git commit -m "메시지"      │
+         │                              │
+         │  ──── git push ────────────► │
+         │  ◄─── git pull ──────────── │
+
+✅ 자주 쓰는 상태 확인 명령어 (보너스!)
+
+        git status    # 현재 상태 확인
+        git log       # 커밋 기록 보기
+
+
+💡 핵심 루틴 기억하기!
+수정 → add → commit → push 이 4단계가 앞으로 매일 하는 작업이에요!
+
+--------------------------------------------------
 
 1단계: 개발환경 설정  
 2단계: Git/GitHub 설정 (저장소 설정)  
@@ -39,8 +107,29 @@
           git config --global init.defaultBranch main  
 
 ### 2단계: Git/GitHub 설정 (저장소 설정)  
-      - GitHub 저장소 생성  
-      - 로컬 폴더 Git 초기화 & GitHub 연결
+-----
+  #### 프로젝트 폴더 생성
+  mkdir prompt-manager
+  cd prompt-manager
+
+  #### 프로젝트 파일 생성
+
+  
+  #### Git 초기화
+  git init
+  
+  #### .gitignore 생성
+  echo "__pycache__/" > .gitignore
+  echo "*.pyc" >> .gitignore
+  echo ".DS_Store" >> .gitignore
+
+------------
+
+
+
+
+- GitHub 저장소 생성  
+- 로컬 폴더 Git 초기화 & GitHub 연결  
          로컬 폴더 만들기  
          Git 초기화  
          GitHub 연결  
@@ -102,7 +191,7 @@
             📁 A1_1
               └── 📄 A1_1.py   ← 이걸 만들어요!
 
-            echo "" > A1_1.py
+            >echo "" > A1_1.py
               │    │    │
               │    │    └── 만들 파일 이름
               │    └── 빈 내용 (파일 안에 들어갈 내용)
@@ -115,12 +204,37 @@
             >A1_1.py             <- 이렇게 나오면 성공
             
             Git에 등록
-            git add A1_1.py
+            >git add A1_1.py
               │   │    │
               │   │    └── 등록할 파일 이름
               │   └── "이 파일을 추적 목록에 올려줘"
               └── "준비해줘"
   
+            >git commit -m "first commit"
+                │       │       │
+                │       │       └── 메모 내용 (내가 쓰고 싶은 말)
+                │       └── -m : message의 약자 (메모를 쓰겠다는 신호)
+                └── "지금 이 상태를 저장해줘"
+
+
+               -> [main (root-commit) 7a28fe1] first commit
+                   │         │          │         │
+                   │         │          │         └── 내가 쓴 메모
+                   │         │          └── 커밋 고유번호 (일종의 저장 ID)
+                   │         └── 첫 번째 커밋이라는 표시
+                   └── main 브랜치에 저장됨
+                
+               -> 1 file changed, 0 insertions(+), 0 deletions(-)
+                   │                  │                  │
+                   │                  │                  └── 삭제된 줄 : 0줄
+                   │                  └── 추가된 줄 : 0줄 (빈 파일이라서)
+                   └── 변경된 파일 : 1개
+                
+               -> create mode 100644 A1_1.py
+                                      │
+                                      └── A1_1.py 파일이 새로 등록됨
+
+
 
 
 
@@ -133,6 +247,27 @@ GitHub에 푸시
           echo "__pycache__/" > .gitignore  
           echo "*.pyc" >> .gitignore  
           echo ".DS_Store" >> .gitignore  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### 3단계: 프로그램 코드 작성  
 prompt_manager.py 파일을 생성하세요.  
