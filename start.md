@@ -109,11 +109,11 @@
 ### 2단계: Git/GitHub 설정 (저장소 설정)  
 -----
   #### 프로젝트 폴더 생성
-  mkdir prompt-manager
-  cd prompt-manager
+  mkdir A1_1
+  cd A1_1
 
   #### 프로젝트 파일 생성
-
+  echo "" > A1_1.py
   
   #### Git 초기화
   git init
