@@ -5,7 +5,7 @@
 
 ---
 
-## 프로그램 소개
+## 📌프로그램 소개
 
 - 터미널(콘솔)에서 번호를 입력해 기능을 선택하는 메뉴 기반 CLI 프로그램입니다.
 - 실행하는 동안 추가한 프롬프트/즐겨찾기 상태는 유지되며, 종료하면 초기화됩니다.  
@@ -13,9 +13,9 @@
 
 ---
 
-## Step 1. 개발 환경 준비 (VSCode / Python / Git)
+## 📌. 개발 환경 준비 (VSCode / Python / Git)
 
-### 1-1. VSCode 설치 및 확장 설치
+### ✅. VSCode 설치 및 확장 설치
 
 1. [VSCode 공식 사이트](https://code.visualstudio.com/)에서 설치.
 2. Python 확장(Microsoft 제공)** 설치.  
@@ -23,7 +23,7 @@
 3. (선택) 한글 메뉴를 원한다면 `Korean Language Pack` 설치.  
    (설치 후 우측 하단에 뜨는 `Restart` 버튼을 눌러 VSCode를 재시작하면 한글 메뉴로 바뀝니다.)
 
-### 1-2. Python 설치 확인
+### ✅. Python 설치 확인
 
 ```bash
 python --version
@@ -37,7 +37,7 @@ python3 --version
   [python.org](https://www.python.org/downloads/) 에서 최신 버전을 설치.
 
 
-### 1-3. Git 설치 및 초기 설정
+### ✅. Git 설치 및 초기 설정
 
 - Git이 설치되어 있지 않다면 [git-scm.com](https://git-scm.com/downloads) 에서 설치.
 
@@ -64,7 +64,7 @@ git config --global --list
 git config --global init.defaultBranch main
 ```
 
-### 1-4. VSCode에서 GitHub 계정 연동
+### ✅. VSCode에서 GitHub 계정 연동
 
 1. VSCode 왼쪽 하단의 **계정(사람 모양 아이콘)** 클릭 → **Sign in with GitHub** 선택.
 2. 브라우저 창이 열리면 GitHub 로그인 후 권한을 승인합니다.
@@ -73,9 +73,9 @@ git config --global init.defaultBranch main
 
 ---
 
-## Step 2. GitHub 저장소 만들고 로컬과 연결하기
+## 📌. GitHub 저장소 만들고 로컬과 연결하기
 
-### 2-1. GitHub에 새 저장소 생성
+### ✅. GitHub에 새 저장소 생성
 
 1. [github.com](https://github.com) 로그인 → 우측 상단 **+ → New repository**.
 2. Repository name 입력 (예: `A1_1`).
@@ -84,7 +84,7 @@ git config --global init.defaultBranch main
 4. 생성된 저장소의 **HTTPS URL**을 복사해 둠.
    예: `https://github.com/goodday-min/A1_1.git`
 
-### 2-2. GITHUB 저장소 clone 
+### ✅. GITHUB 저장소 clone 
 
 ```bash
 git clone https://github.com/goodday-min/A1_1.git
@@ -99,7 +99,7 @@ git log --oneline
 
 
 
-### 2-3. 프로젝트 폴더 생성 및 로컬 저장소 초기화
+### ✅. 프로젝트 폴더 생성 및 로컬 저장소 초기화
 
 ```bash
 mkdir A1_1
@@ -108,11 +108,11 @@ git init
 
 - `git init` : 현재 폴더를 Git이 관리하는 저장소로 만듬. (숨김 폴더 `.git` 생성)
 
-### 2-4. 파일 준비
+### ✅. 파일 준비
 
 - 이 저장소에 있는 `A1_1.py`, `README.md`, `.gitignore` 파일을 `A1_1` 폴더 안에 복사해 넣는다.
 
-### 2-5. 원격 저장소 연결 및 첫 커밋/푸시
+### ✅. 원격 저장소 연결 및 첫 커밋/푸시
 
 ```bash
 git remote add origin https://github.com/A1_1/A1_1.git
@@ -140,7 +140,7 @@ git pull origin main
 
 ---
 
-## Step 3. 프로그램 실행 방법
+## 📌. 프로그램 실행 방법
 
 ```bash
 cd A1_1
@@ -154,7 +154,7 @@ python A1_1.py
 
 ---
 
-## 기능 목록
+## ✅ 기능 목록
 
 | 번호 | 기능 | 설명 |
 |---|---|---|
@@ -173,7 +173,7 @@ python A1_1.py
 
 ---
 
-## 데이터 저장 정책 (중요)
+## ✅ 데이터 저장 정책 (중요)
 
 | 구분 | 대상 | 저장 방식 | 프로그램 종료 시 |
 |---|---|---|---|
@@ -224,7 +224,7 @@ python A1_1.py
 
 ---
 
-## Step 4. 커밋 & 브랜치 병합 
+## 📌. 커밋 & 브랜치 병합 
 
 
 ### main 브랜치 생성 및 병합
@@ -300,6 +300,7 @@ python A1_1.py
 | 의미 부여 | ❌ 어려움 | ✅ 키로 가능 |
 | 복잡한 데이터 | 🔶 부적합 | ✅ 적합 |
 
+---
 
 ## Git이란?
 
@@ -330,6 +331,7 @@ Git은 소스 코드의 변경 이력을 관리하는 **분산 버전 관리 시
 - 특정 시점의 코드로 되돌리기 어렵고, 무엇이 왜 바뀌었는지 알기 힘들다.
 
 
+---
 
 ## 브랜치 전략 비교
 
@@ -349,7 +351,7 @@ Git은 소스 코드의 변경 이력을 관리하는 **분산 버전 관리 시
 | **대표 사용 예** | 데스크톱/모바일 앱, 정기 버전 출시 소프트웨어 | GitHub 자체, 다수의 오픈소스 웹 프로젝트 | GitLab, 다단계 배포 파이프라인을 쓰는 조직 | Google, Facebook 등 대규모 CI/CD 조직 |
 
 
-
+---
 
 ## 제출물 체크리스트
 
