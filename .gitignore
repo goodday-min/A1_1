@@ -1,0 +1,14 @@
+# Python 캐시 파일
+__pycache__/
+*.pyc
+*.pyo
+
+# VSCode 설정
+.vscode/
+
+# 가상환경
+venv/
+env/
+
+# 시스템 파일 (Mac)
+.DS_Store
