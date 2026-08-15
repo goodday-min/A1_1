@@ -189,6 +189,73 @@ def list_favorites():
     for p in result:
         print(f"  ⭐ [{p['id']}] {p['title']} ({p['category']})")
 
+# 프롬프트 수정
+def edit_prompt():
+    global prompts  # ✅ 전역변수 선언 추가
+    print("\n=== 프롬프트 수정 ===")
+    
+    # ✅ 숫자 입력 오류 처리
+    try:
+        prompt_id = int(input("수정할 프롬프트 ID: "))
+    except ValueError:
+        print("❌ 숫자를 입력해주세요.")
+        return
+    
+    for prompt in prompts:
+        if prompt["id"] == prompt_id:
+            # 현재 정보 출력
+            print(f"현재 제목    : {prompt['title']}")
+            print(f"현재 내용    : {prompt['content']}")
+            print(f"현재 카테고리: {prompt['category']}")  # ✅ 카테고리 추가
+            
+            new_title    = input("새 제목 (엔터=유지): ")
+            new_content  = input("새 내용 (엔터=유지): ")
+            new_category = input("새 카테고리 (엔터=유지): ")  # ✅ 카테고리 추가
+            
+            # 입력값 있을 때만 수정
+            if new_title:
+                prompt["title"] = new_title
+            if new_content:
+                prompt["content"] = new_content
+            if new_category:
+                prompt["category"] = new_category  # ✅ 카테고리 수정
+                
+            save_prompts()
+            print("✅ 수정 완료!")
+            return
+            
+    print("❌ 해당 ID를 찾을 수 없습니다.")
+
+
+# 프롬프트 삭제
+def delete_prompt():
+    global prompts  # ✅ 전역변수 선언 추가
+    print("\n=== 프롬프트 삭제 ===")
+    
+    # ✅ 숫자 입력 오류 처리
+    try:
+        prompt_id = int(input("삭제할 프롬프트 ID: "))
+    except ValueError:
+        print("❌ 숫자를 입력해주세요.")
+        return
+    
+    for prompt in prompts:
+        if prompt["id"] == prompt_id:
+            # 삭제 전 정보 출력
+            print(f"제목    : {prompt['title']}")
+            print(f"카테고리: {prompt['category']}")  # ✅ 카테고리 확인
+            confirm = input("정말 삭제하시겠습니까? (y/n): ")
+            
+            if confirm.lower() == "y":
+                prompts.remove(prompt)
+                save_prompts()
+                print("✅ 삭제 완료!")
+            else:
+                print("❌ 삭제 취소!")
+            return
+            
+    print("❌ 해당 ID를 찾을 수 없습니다.")
+    
 # ── 메인 루프 ──────────────────────────────────────
 def main():
     while True:
